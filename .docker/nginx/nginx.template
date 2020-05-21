@@ -1,12 +1,12 @@
 server {
-    listen 80;
+    listen {{ default .Env.NGINX_PORT "80" }};
     index index.php index.html;
     root /var/www/public;
 
     location ~ \.php$ {
         try_files $uri =404;
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass app:9000;
+        fastcgi_pass {{ default .Env.APP_HOST "app" }}:{{ default .Env.APP_PORT "9000" }};
         fastcgi_index index.php;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
